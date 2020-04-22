@@ -1,4 +1,4 @@
- //Jacob Huedepohl
+//Jacob Huedepohl
 //Traffic Lights
 //Project 5
 
@@ -62,6 +62,15 @@ for ( int i = 0; i < 5; i++) // blink yellow light
         delay(yellowBlinkTime);
       }
 }
+
+void greentToYelllow(int green, int yellow)
+  {
+digitalWrite(green, LOW); //change east-facing lights from green
+                                    // to yellow to red
+      digitalWrite(yellow, HIGH);
+      delay(changeDelay);
+  }
+  
 void loop()
 {
   if ( digitalRead(westButton) == HIGH) // request west>east traffic flow
@@ -71,17 +80,20 @@ void loop()
     {
       trafficWest = true; // change traffic flow flag to west>east
       delay(flowTime); //give time for traffic to flow
+      /*
       digitalWrite(eastGreen, LOW); //change east-facing lights from green
                                     // to yellow to red
       digitalWrite(eastYellow, HIGH);
       delay(changeDelay);
+      */
+      greentToYelllow(eastGreen, eastYellow);
       digitalWrite(eastYellow, LOW);
       digitalWrite(eastRed, HIGH);
       delay(changeDelay);
-     
-     blinkYellowLight (westYellow);
-     
-     /*
+    
+      blinkYellowLight (westYellow);
+      
+      /*
       for ( int i = 0; i < 5; i++) // blink yellow light
       {
         digitalWrite(westYellow, LOW);
@@ -107,17 +119,19 @@ void loop()
     {
       trafficWest = false; // change traffic flow flag to east>west
       delay(flowTime);     //give time for traffic to flow
+      /*
       digitalWrite(westGreen, LOW);
       //change west lights from green to yellow to red
       digitalWrite(westYellow, HIGH);
       delay(changeDelay);
+      */
+         greentToYelllow(westGreen, westYellow);
       digitalWrite(westYellow, LOW);
       digitalWrite(westRed, HIGH);
       delay(changeDelay);
-     
-     blinkYellowLight(eastYellow);
-     
-     /*
+
+      blinkYellowLight (eastYellow);
+      /*
       for ( int i = 0; i < 5; i++) // blink yellow light
       {
         digitalWrite(eastYellow, LOW);
