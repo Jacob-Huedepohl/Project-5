@@ -41,7 +41,7 @@ void setup()
   pinMode(eastPedGreen, OUTPUT);
 
   // set initial state for lights - west side is green first
-  digitalWrite(westRed, LOW); 
+  digitalWrite(westRed, LOW);
   digitalWrite(westYellow, LOW);
   digitalWrite(westGreen, HIGH);
   digitalWrite(eastRed, HIGH);
@@ -54,57 +54,65 @@ void setup()
 }
 void blinkYellowLight(int yellowLED)
 {
-for ( int i = 0; i < 5; i++) // blink yellow light
-      {
-        digitalWrite(yellowLED, LOW);
-        delay(yellowBlinkTime);
-        digitalWrite(yellowLED, HIGH);
-        delay(yellowBlinkTime);
-      }
+  for ( int i = 0; i < 5; i++) // blink yellow light
+  {
+    digitalWrite(yellowLED, LOW);
+    delay(yellowBlinkTime);
+    digitalWrite(yellowLED, HIGH);
+    delay(yellowBlinkTime);
+  }
 }
 
 void greentToYelllow(int green, int yellow)
-  {
-digitalWrite(green, LOW); //change east-facing lights from green
-                                    // to yellow to red
-      digitalWrite(yellow, HIGH);
-      delay(changeDelay);
-  }
-  
+{
+  digitalWrite(green, LOW); //change east-facing lights from green
+  // to yellow to red
+  digitalWrite(yellow, HIGH);
+  delay(changeDelay);
+}
+
+void yellowToRed(int yellow, int red)
+{
+  digitalWrite(eastYellow, LOW);
+  digitalWrite(eastRed, HIGH);
+  delay(changeDelay);
+}
+
 void loop()
 {
   if ( digitalRead(westButton) == HIGH) // request west>east traffic flow
   {
     if ( trafficWest != true)
-    // Only continue if traffic flowing in the opposite (east) direction
+      // Only continue if traffic flowing in the opposite (east) direction
     {
       trafficWest = true; // change traffic flow flag to west>east
       delay(flowTime); //give time for traffic to flow
       /*
-      digitalWrite(eastGreen, LOW); //change east-facing lights from green
+        digitalWrite(eastGreen, LOW); //change east-facing lights from green
                                     // to yellow to red
-      digitalWrite(eastYellow, HIGH);
-      delay(changeDelay);
-      */
+        digitalWrite(eastYellow, HIGH);
+        delay(changeDelay);*/
       greentToYelllow(eastGreen, eastYellow);
-      digitalWrite(eastYellow, LOW);
-      digitalWrite(eastRed, HIGH);
-      delay(changeDelay);
-    
-      blinkYellowLight (westYellow);
-      
       /*
-      for ( int i = 0; i < 5; i++) // blink yellow light
-      {
+        digitalWrite(eastYellow, LOW);
+        digitalWrite(eastRed, HIGH);
+        delay(changeDelay);*/
+      yellowToRed (eastYellow, eastRed);
+      blinkYellowLight (westYellow);
+
+      /*
+        for ( int i = 0; i < 5; i++) // blink yellow light
+        {
         digitalWrite(westYellow, LOW);
         delay(yellowBlinkTime);
         digitalWrite(westYellow, HIGH);
         delay(yellowBlinkTime);
-      }
+        }
       */
       digitalWrite(westYellow, LOW);
       digitalWrite(westRed, LOW); //change west-facing lights from red to green
       digitalWrite(westGreen, HIGH);
+      
       digitalWrite(westPedGreen, LOW); //change pedestrian lights based on west button being high
       digitalWrite(westPedRed, HIGH);
       digitalWrite(eastPedGreen, HIGH);
@@ -115,34 +123,35 @@ void loop()
   if ( digitalRead(eastButton) == HIGH) //request east>west traffic flow
   {
     if ( trafficWest == true)
-    //only continue if traffic flow is in the opposite (west) direction
+      //only continue if traffic flow is in the opposite (west) direction
     {
       trafficWest = false; // change traffic flow flag to east>west
       delay(flowTime);     //give time for traffic to flow
       /*
-      digitalWrite(westGreen, LOW);
-      //change west lights from green to yellow to red
-      digitalWrite(westYellow, HIGH);
-      delay(changeDelay);
-      */
-         greentToYelllow(westGreen, westYellow);
-      digitalWrite(westYellow, LOW);
-      digitalWrite(westRed, HIGH);
-      delay(changeDelay);
-
+        digitalWrite(westGreen, LOW);
+        //change west lights from green to yellow to red
+        digitalWrite(westYellow, HIGH);
+        delay(changeDelay);*/
+      greentToYelllow(westGreen, westYellow);
+      /*
+        digitalWrite(westYellow, LOW);
+        digitalWrite(westRed, HIGH);
+        delay(changeDelay);*/
+      yellowToRed (westYellow, westRed);
       blinkYellowLight (eastYellow);
       /*
-      for ( int i = 0; i < 5; i++) // blink yellow light
-      {
+        for ( int i = 0; i < 5; i++) // blink yellow light
+        {
         digitalWrite(eastYellow, LOW);
         delay(yellowBlinkTime);
         digitalWrite(eastYellow, HIGH);
         delay(yellowBlinkTime);
-      }
+        }
       */
       digitalWrite(eastYellow, LOW);
       digitalWrite(eastRed, LOW); // change east-facing lights from red to green
       digitalWrite(eastGreen, HIGH);
+      
       digitalWrite(westPedGreen, HIGH); //change pedestrian lights based on east button being high
       digitalWrite(westPedRed, LOW);
       digitalWrite(eastPedGreen, LOW);
